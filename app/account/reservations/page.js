@@ -2,7 +2,9 @@ import ReservationList from "@/app/_components/ReservationList";
 import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
 
-export const metadata = { title: "Reservations" };
+export const metadata = {
+  title: "Reservations",
+};
 
 export default async function Page() {
   const session = await auth();

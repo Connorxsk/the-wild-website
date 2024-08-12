@@ -1,9 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
-import { supabase } from "./supabase";
 import { getBookings } from "./data-service";
+import { supabase } from "./supabase";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function updateGuest(formData) {
@@ -35,7 +35,7 @@ export async function createBooking(bookingData, formData) {
   const newBooking = {
     ...bookingData,
     guestId: session.user.guestId,
-    numGuests: formData.get("numGuests"),
+    numGuests: Number(formData.get("numGuests")),
     observations: formData.get("observations").slice(0, 1000),
     extrasPrice: 0,
     totalPrice: bookingData.cabinPrice,
@@ -48,7 +48,7 @@ export async function createBooking(bookingData, formData) {
 
   if (error) throw new Error("Booking could not be created");
 
-  revalidatePath(`/cabin/${bookingData.cabinId}`);
+  revalidatePath(`/cabins/${bookingData.cabinId}`);
 
   redirect("/cabins/thankyou");
 }
@@ -76,24 +76,24 @@ export async function deleteBooking(bookingId) {
 export async function updateBooking(formData) {
   const bookingId = Number(formData.get("bookingId"));
 
-  //1.Authentication
+  // 1) Authentication
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
 
-  //2.Authorization
+  // 2) Authorization
   const guestBookings = await getBookings(session.user.guestId);
   const guestBookingIds = guestBookings.map((booking) => booking.id);
 
   if (!guestBookingIds.includes(bookingId))
     throw new Error("You are not allowed to update this booking");
 
-  //3.Building update data
+  // 3) Building update data
   const updateData = {
     numGuests: Number(formData.get("numGuests")),
     observations: formData.get("observations").slice(0, 1000),
   };
 
-  //4.Mutation
+  // 4) Mutation
   const { error } = await supabase
     .from("bookings")
     .update(updateData)
@@ -101,14 +101,14 @@ export async function updateBooking(formData) {
     .select()
     .single();
 
-  //5.Error handling
+  // 5) Error handling
   if (error) throw new Error("Booking could not be updated");
 
-  //6.revalidation
+  // 6) Revalidation
   revalidatePath(`/account/reservations/edit/${bookingId}`);
   revalidatePath("/account/reservations");
 
-  //7.Redirecting
+  // 7) Redirecting
   redirect("/account/reservations");
 }
 

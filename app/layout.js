@@ -1,16 +1,16 @@
 import Logo from "@/app/_components/Logo";
 import Navigation from "@/app/_components/Navigation";
-import "@/app/_styles/globals.css";
-import Header from "./_components/Header";
+
 import { Josefin_Sans } from "next/font/google";
-import { ReservationProvider } from "./_components/ReservationContext";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
   display: "swap",
 });
 
-console.log(josefin);
+import "@/app/_styles/globals.css";
+import Header from "./_components/Header";
+import { ReservationProvider } from "./_components/ReservationContext";
 
 export const metadata = {
   title: {
@@ -18,14 +18,14 @@ export const metadata = {
     default: "Welcome / The Wild Oasis",
   },
   description:
-    "Luxurious cabin hotel,located in the heart of the Italian Dolomites,surrounded by beautiful mountains and dark forests",
+    "Luxurious cabin hotel, located in the heart of the Italian Dolomites, surrounded by beautiful mountains and dark forests",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={` ${josefin.className} bg-primary-950 text-primary-100 min-h-screen flex flex-col antialiased relative`}
+        className={`${josefin.className} antialiased bg-primary-950 text-primary-100 min-h-screen flex flex-col relative`}
       >
         <Header />
 

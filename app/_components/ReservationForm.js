@@ -2,9 +2,8 @@
 
 import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
-
-import SubmitButton from "./SubmitButton";
 import { createBooking } from "../_lib/actions";
+import SubmitButton from "./SubmitButton";
 
 function ReservationForm({ cabin, user }) {
   const { range, resetRange } = useReservation();
@@ -14,7 +13,6 @@ function ReservationForm({ cabin, user }) {
   const endDate = range.to;
 
   const numNights = differenceInDays(endDate, startDate);
-
   const cabinPrice = numNights * (regularPrice - discount);
 
   const bookingData = {
@@ -45,6 +43,7 @@ function ReservationForm({ cabin, user }) {
       </div>
 
       <form
+        // action={createBookingWithData}
         action={async (formData) => {
           await createBookingWithData(formData);
           resetRange();

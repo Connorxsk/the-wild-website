@@ -13,7 +13,6 @@ const authConfig = {
     authorized({ auth, request }) {
       return !!auth?.user;
     },
-
     async signIn({ user, account, profile }) {
       try {
         const existingGuest = await getGuest(user.email);
@@ -26,7 +25,6 @@ const authConfig = {
         return false;
       }
     },
-
     async session({ session, user }) {
       const guest = await getGuest(session.user.email);
       session.user.guestId = guest.id;

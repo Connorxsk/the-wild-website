@@ -4,7 +4,6 @@ import { getBooking, getCabin } from "@/app/_lib/data-service";
 
 export default async function Page({ params }) {
   const { bookingId } = params;
-
   const { numGuests, observations, cabinId } = await getBooking(bookingId);
   const { maxCapacity } = await getCabin(cabinId);
 
@@ -52,7 +51,7 @@ export default async function Page({ params }) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          <SubmitButton pendingLabel="updating...">
+          <SubmitButton pendingLabel="Updating...">
             Update reservation
           </SubmitButton>
         </div>
